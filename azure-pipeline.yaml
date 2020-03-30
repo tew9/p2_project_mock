@@ -38,7 +38,7 @@ stages:
               dotnet build
               dotnet test
               dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
-          - env:
+            env:
               SONAR_LOGIN: $(sonar.login)
 
       - job: analyze_api
@@ -52,7 +52,7 @@ stages:
               dotnet build
               dotnet test
               dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
-          - env:
+            env:
               SONAR_LOGIN: $(sonar.login)
 
   - stage: pack
