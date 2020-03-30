@@ -67,8 +67,8 @@ stages:
               docker image build --file /docker/mvc.dockerfile --tag tangotew/p2-project Webflix/Webflix.MVC
               docker image push tangotew/mvc_proj
             inputs:
-            command: logout
-            containerRegistry: p2_docker
+              command: logout
+              containerRegistry: p2_docker
 
       - job: pack_api
         steps:
