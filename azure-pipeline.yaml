@@ -9,21 +9,21 @@ pr:
   - master
 
 # Integration pipeline
-stages:
-  - stage: build
-    jobs:
-      - job: build_mvc
-        steps:
-          - script: dotnet build Webflix/Webflix.MVC/*.csproj
+# stages:
+#   - stage: build
+#     jobs:
+#       - job: build_mvc
+#         steps:
+#           - script: dotnet build Webflix/Webflix.MVC/*.csproj
 
-      - job: build_api
-        steps:
-          - script: dotnet build Webflix/Webflix.API/*.csproj
+#       - job: build_api
+#         steps:
+#           - script: dotnet build Webflix/Webflix.API/*.csproj
 
-  - stage: test
-    jobs:
-      - job: test_mvc
-      - job: test_api
+#   - stage: test
+#     jobs:
+#       - job: test_mvc
+#       - job: test_api
 
   - stage: analyze
     jobs:
@@ -36,8 +36,7 @@ stages:
               name: "dotnet-sonarscanner"
           - script: |
               dotnet sonarscanner begin /k:"webflix_mvc1" /o:"tew9" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login2=$SONAR_LOGIN
-              dotnet build p2_project/Webflix/*.sln
-              dotnet test
+              dotnet build Webflix/Webflix.MVC/*.csproj
               dotnet sonarscanner end /d:sonar.login2=$SONAR_LOGIN
             env:
               SONAR_LOGIN: $(sonar.login2)
