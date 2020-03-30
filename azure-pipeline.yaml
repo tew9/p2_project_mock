@@ -11,50 +11,50 @@ pr:
 # Integration pipeline
 stages:
   - stage: build
-      jobs:
-        - job: build_mvc
-          steps:
-            - script: dotnet build --project Webflix.MVC/*.csproj
-        - job: build_api
-          steps:
-            - script: dotnet build --project Webflix.API/*.csproj
+    jobs:
+      - job: build_mvc
+        steps:
+          - script: dotnet build --project Webflix.MVC/*.csproj
+      - job: build_api
+        steps:
+          - script: dotnet build --project Webflix.API/*.csproj
 
   - stage: test
-      jobs:
-        - job: test_mvc
-        - job: test_api
+    jobs:
+      - job: test_mvc
+      - job: test_api
 
   - stage: analyze
-      jobs:
-        - job: analyze_mvc
-          pool: ubuntu-18.04
-          steps:
-            - task: DotnetGlobalToolInstaller@0
-              inputs:
-                name: "dotnet-sonarscanner"
-            - script: |
-                dotnet sonarscanner begin /key:"webflix_mvc1" /n:"webflix" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
-                dotnet build
-                dotnet test
-                dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
-            - env:
-                SONAR_LOGIN: $(sonar.login)
+    jobs:
+      - job: analyze_mvc
+        pool: ubuntu-18.04
+        steps:
+          - task: DotnetGlobalToolInstaller@0
+            inputs:
+              name: "dotnet-sonarscanner"
+          - script: |
+              dotnet sonarscanner begin /key:"webflix_mvc1" /n:"webflix" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
+              dotnet build
+              dotnet test
+              dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
+          - env:
+              SONAR_LOGIN: $(sonar.login)
 
-        - job: analyze_api
-            jobs:
-            - job: analyze_api
-              pool: ubuntu-18.04
-              steps:
-                - task: DotnetGlobalToolInstaller@0
-                  inputs:
-                    name: "dotnet-sonarscanner"
-                - script: |
-                    dotnet sonarscanner begin /key:"webflix_api1" /n: /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
-                    dotnet build
-                    dotnet test
-                    dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
-                - env:
-                    SONAR_LOGIN: $(sonar.login)
+      - job: analyze_api
+          jobs:
+          - job: analyze_api
+            pool: ubuntu-18.04
+            steps:
+              - task: DotnetGlobalToolInstaller@0
+                inputs:
+                  name: "dotnet-sonarscanner"
+              - script: |
+                  dotnet sonarscanner begin /key:"webflix_api1" /n: /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
+                  dotnet build
+                  dotnet test
+                  dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
+              - env:
+                  SONAR_LOGIN: $(sonar.login)
 
   - stage: pack
       jobs:
@@ -77,19 +77,19 @@ stages:
                 docker image build --file /docker/mvc.dockerfile --tag tangotew/api_proj Webflix/Webflix.API
                 docker image push tangotew/api_proj
 
-  - stage: deploy
-      jobs:
-        - job: deploy_app
-        - steps:
-            - task: DockerCompose@0
-                displayName: Run services
-                inputs:
-                  action: Run services
-                  azureSubscriptionEndpoint: $(azure.subscription)
-                  azureContainerRegistry: $(p2_azure)
-                  dockerComposeFile: docker-compose.yaml
-                  projectName: $(Build.Repository.Name)
-                  qualifyImageNames: true
-                  buildImages: false
-                  detached: false
+  # - stage: deploy
+  #     jobs:
+  #       - job: deploy_app
+  #       - steps:
+  #           - task: DockerCompose@0
+  #               displayName: Run services
+  #               inputs:
+  #                 action: Run services
+  #                 azureSubscriptionEndpoint: $(azure.subscription)
+  #                 azureContainerRegistry: $(p2_azure)
+  #                 dockerComposeFile: docker-compose.yaml
+  #                 projectName: $(Build.Repository.Name)
+  #                 qualifyImageNames: true
+  #                 buildImages: false
+  #                 detached: false
 
