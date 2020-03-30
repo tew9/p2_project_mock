@@ -58,7 +58,7 @@ stages:
   - stage: pack
     jobs:
       - job: pack_mvc
-      - steps:
+        steps:
           - task: Docker@2
           - inputs:
               command: login
@@ -68,7 +68,7 @@ stages:
               docker image push tangotew/mvc_proj
 
       - job: pack_api
-      - steps:
+        steps:
         - task: Docker@2
         - inputs:
             command: login
@@ -78,18 +78,18 @@ stages:
             docker image push tangotew/api_proj
 
   # - stage: deploy
-  #     jobs:
-  #       - job: deploy_app
-  #       - steps:
-  #           - task: DockerCompose@0
-  #               displayName: Run services
-  #               inputs:
-  #                 action: Run services
-  #                 azureSubscriptionEndpoint: $(azure.subscription)
-  #                 azureContainerRegistry: $(p2_azure)
-  #                 dockerComposeFile: docker-compose.yaml
-  #                 projectName: $(Build.Repository.Name)
-  #                 qualifyImageNames: true
-  #                 buildImages: false
-  #                 detached: false
+#     jobs:
+#       - job: deploy_app
+#       - steps:
+#           - task: DockerCompose@0
+#               displayName: Run services
+#               inputs:
+#                 action: Run services
+#                 azureSubscriptionEndpoint: $(azure.subscription)
+#                 azureContainerRegistry: $(p2_azure)
+#                 dockerComposeFile: docker-compose.yaml
+#                 projectName: $(Build.Repository.Name)
+#                 qualifyImageNames: true
+#                 buildImages: false
+#                 detached: false
 
