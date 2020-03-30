@@ -25,35 +25,35 @@ stages:
       - job: test_mvc
       - job: test_api
 
-  - stage: analyze
-    jobs:
-      - job: analyze_mvc
-        pool: ubuntu-18.04
-        steps:
-          - task: DotnetGlobalToolInstaller@0
-            inputs:
-              name: "dotnet-sonarscanner"
-          - script: |
-              dotnet sonarscanner begin /key:"webflix_mvc1" /n:"webflix" /o:"tew9" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
-              dotnet build
-              dotnet test
-              dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
-            env:
-              SONAR_LOGIN: $(sonar.login)
+  # - stage: analyze
+  #   jobs:
+  #     - job: analyze_mvc
+  #       pool: ubuntu-18.04
+  #       steps:
+  #         - task: DotnetGlobalToolInstaller@0
+  #           inputs:
+  #             name: "dotnet-sonarscanner"
+  #         - script: |
+  #             dotnet sonarscanner begin /key:"webflix_mvc1" /n:"webflix" /o:"tew9" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
+  #             dotnet build
+  #             dotnet test
+  #             dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
+  #           env:
+  #             SONAR_LOGIN: $(sonar.login)
 
-      - job: analyze_api
-        pool: ubuntu-18.04
-        steps:
-          - task: DotnetGlobalToolInstaller@0
-            inputs:
-              name: "dotnet-sonarscanner"
-          - script: |
-              dotnet sonarscanner begin /key:"webflix_api1" /n:"webflix" /o:"tew9" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
-              dotnet build
-              dotnet test
-              dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
-            env:
-              SONAR_LOGIN: $(sonar.login)
+  #     - job: analyze_api
+  #       pool: ubuntu-18.04
+  #       steps:
+  #         - task: DotnetGlobalToolInstaller@0
+  #           inputs:
+  #             name: "dotnet-sonarscanner"
+  #         - script: |
+  #             dotnet sonarscanner begin /key:"webflix_api1" /n:"webflix" /o:"tew9" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
+  #             dotnet build
+  #             dotnet test
+  #             dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
+  #           env:
+  #             SONAR_LOGIN: $(sonar.login)
 
   - stage: pack
     jobs:
