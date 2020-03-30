@@ -23,7 +23,7 @@ namespace Webflix.MVC.Controllers
 
         public IActionResult Index()
         {
-            var res = _client.GetStringAsync("http://api/flix").GetAwaiter().GetResult();
+            var res = _client.GetStringAsync("http://api/flixapi").GetAwaiter().GetResult();
             var films = JsonConvert.DeserializeObject<List<FlixViewModel>>(res);
             return View(films);
         }

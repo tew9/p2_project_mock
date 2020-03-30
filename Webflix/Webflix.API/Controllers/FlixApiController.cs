@@ -9,9 +9,9 @@ namespace Webflix.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FlixController : ControllerBase
+    public class FlixApiController : ControllerBase
     {
-        private readonly ILogger<FlixController> _logger;
+        private readonly ILogger<FlixApiController> _logger;
         private static readonly List<FlixModel> _fml = new List<FlixModel>()
         {
           new FlixModel(){Title = "X-Men"},
