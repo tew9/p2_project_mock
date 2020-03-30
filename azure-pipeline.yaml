@@ -28,7 +28,8 @@ stages:
   - stage: analyze
     jobs:
       - job: analyze_mvc
-        pool: ubuntu-18.04
+        pool: 
+          vmImage: ubuntu-18.04
         steps:
           - task: DotnetGlobalToolInstaller@0
             inputs:
@@ -42,7 +43,8 @@ stages:
               SONAR_LOGIN: $(sonar.login2)
 
       - job: analyze_api
-        pool: ubuntu-18.04
+        pool: 
+          vmImage: ubuntu-18.04
         steps:
           - task: DotnetGlobalToolInstaller@0
             inputs:
