@@ -21,7 +21,6 @@ namespace Webflix.MVC
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    // .UseUrls("http://+:4000");
                 });
     }
 }
