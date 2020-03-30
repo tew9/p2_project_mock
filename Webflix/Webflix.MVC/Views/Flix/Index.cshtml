@@ -1,0 +1,13 @@
+@model IEnumerable<Webflix.MVC.Models.FlixViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+  <ul>
+    @foreach (var item in @Model)
+    {
+      <li>@item.Title</li> 
+    }
+  </ul>
+</div>

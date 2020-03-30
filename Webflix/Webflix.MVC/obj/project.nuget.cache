@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "v8qtmqD8ukGrpjXUabPiEkln8SrMBT0QfFQjfAWCNE1YeSgSwIPXrIjsjd8iSDNvK3aLo4kGY7RT4Kt3MkX4mw==",
+  "success": true,
+  "projectFilePath": "/home/tango/revature/training-code/p2_project/Webflix/Webflix.MVC/Webflix.MVC.csproj",
+  "expectedPackageFiles": [
+    "/home/tango/.nuget/packages/newtonsoft.json/12.0.3/newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

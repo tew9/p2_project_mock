@@ -1,0 +1,24 @@
+networks:
+  skynet:
+
+services:
+  mvc:
+    build:
+      context: Webflix/Webflix.MVC
+      dockerfile: ../../.docker/mvc.dockerfile
+    image: tangotew/mvc_proj
+    ports:
+      - 5000:80
+    networks:
+      - skynet
+  api:
+    build:
+      context: Webflix/Webflix.API
+      dockerfile: ../../.docker/api.dockerfile
+    image: tangotew/api_proj
+    ports:
+      - 4000:80
+    networks:
+      - skynet
+
+version: "3.7"

@@ -1,0 +1,95 @@
+name: $(date:yyyyMMdd)$(rev:.rr) #Give it a name yaml variable with data and incrementing 2020330.00 untill 99
+
+# trigger this pipeline when push to master
+trigger:
+  - master:
+
+# trigger this pipeline when pull request is open in the repository 
+pr:
+  - master
+
+# Integration pipeline
+stages:
+  - stage: build
+      jobs:
+        - job: build_mvc
+          steps:
+            - script: dotnet build --project Webflix.MVC/*.csproj
+        - job: build_api
+          steps:
+            - script: dotnet build --project Webflix.API/*.csproj
+
+  - stage: test
+      jobs:
+        - job: test_mvc
+        - job: test_api
+
+  - stage: analyze
+      jobs:
+        - job: analyze_mvc
+          pool: ubuntu-18.04
+          steps:
+            - task: DotnetGlobalToolInstaller@0
+              inputs:
+                name: "dotnet-sonarscanner"
+            - script: |
+                dotnet sonarscanner begin /key:"webflix_mvc1" /n:"webflix" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
+                dotnet build
+                dotnet test
+                dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
+            - env:
+                SONAR_LOGIN: $(sonar.login)
+
+        - job: analyze_api
+            jobs:
+            - job: analyze_api
+              pool: ubuntu-18.04
+              steps:
+                - task: DotnetGlobalToolInstaller@0
+                  inputs:
+                    name: "dotnet-sonarscanner"
+                - script: |
+                    dotnet sonarscanner begin /key:"webflix_api1" /n: /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
+                    dotnet build
+                    dotnet test
+                    dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
+                - env:
+                    SONAR_LOGIN: $(sonar.login)
+
+  - stage: pack
+      jobs:
+        - job: pack_mvc
+        - steps:
+            - task: Docker@2
+            - inputs:
+                command: login
+                containerRegistry: p2_docker
+            - script: |
+                docker image build --file /docker/mvc.dockerfile --tag tangotew/mvc_proj Webflix/Webflix.MVC
+                docker image push tangotew/mvc_proj
+        - job: pack_api
+         - steps:
+            - task: Docker@2
+            - inputs:
+                command: login
+                containerRegistry: p2_docker
+            - script: |
+                docker image build --file /docker/mvc.dockerfile --tag tangotew/api_proj Webflix/Webflix.API
+                docker image push tangotew/api_proj
+
+  - stage: deploy
+      jobs:
+        - job: deploy_app
+        - steps:
+            - task: DockerCompose@0
+                displayName: Run services
+                inputs:
+                  action: Run services
+                  azureSubscriptionEndpoint: $(azure.subscription)
+                  azureContainerRegistry: $(p2_azure)
+                  dockerComposeFile: docker-compose.yaml
+                  projectName: $(Build.Repository.Name)
+                  qualifyImageNames: true
+                  buildImages: false
+                  detached: false
+
