@@ -41,7 +41,6 @@ stages:
               SONAR_LOGIN: $(sonar.login)
 
       - job: analyze_api
-          jobs:
           - job: analyze_api
             pool: ubuntu-18.04
             steps:
