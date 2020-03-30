@@ -6,7 +6,7 @@ services:
     build:
       context: Webflix/Webflix.MVC
       dockerfile: ../../.docker/mvc.dockerfile
-    image: tangotew/mvc_proj
+    image: tangotew/p2-project
     ports:
       - 5000:80
     networks:
@@ -15,7 +15,7 @@ services:
     build:
       context: Webflix/Webflix.API
       dockerfile: ../../.docker/api.dockerfile
-    image: tangotew/api_proj
+    image: tangotew/p2-project
     ports:
       - 4000:80
     networks:
