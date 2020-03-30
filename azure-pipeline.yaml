@@ -66,6 +66,7 @@ stages:
           - script: |
               docker image build --file /docker/mvc.dockerfile --tag tangotew/p2-project Webflix/Webflix.MVC
               docker image push tangotew/mvc_proj
+          - task: Docker@2
             inputs:
               command: logout
               containerRegistry: p2_docker
@@ -79,6 +80,7 @@ stages:
         - script: |
             docker image build --file /docker/mvc.dockerfile --tag tangotew/api_proj Webflix/Webflix.API
             docker image push tangotew/api_proj
+        - task: Docker@2
           inputs:
             command: logout
             containerRegistry: p2_docker
