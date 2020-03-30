@@ -60,7 +60,7 @@ stages:
       - job: pack_mvc
         steps:
           - task: Docker@2
-          - inputs:
+            inputs:
               command: login
               containerRegistry: p2_docker
           - script: |
@@ -70,7 +70,7 @@ stages:
       - job: pack_api
         steps:
         - task: Docker@2
-        - inputs:
+          inputs:
             command: login
             containerRegistry: p2_docker
         - script: |
