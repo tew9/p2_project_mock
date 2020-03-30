@@ -15,7 +15,7 @@ stages:
       - job: build_mvc
         steps:
           - script: dotnet build --project Webflix.MVC/*.csproj
-          
+
       - job: build_api
         steps:
           - script: dotnet build --project Webflix.API/*.csproj
@@ -34,7 +34,7 @@ stages:
             inputs:
               name: "dotnet-sonarscanner"
           - script: |
-              dotnet sonarscanner begin /key:"webflix_mvc1" /n:"webflix" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
+              dotnet sonarscanner begin /key:"webflix_mvc1" /n:"webflix" /o:"tew9" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
               dotnet build
               dotnet test
               dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
@@ -48,7 +48,7 @@ stages:
             inputs:
               name: "dotnet-sonarscanner"
           - script: |
-              dotnet sonarscanner begin /key:"webflix_api1" /n: /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
+              dotnet sonarscanner begin /key:"webflix_api1" /n:"webflix" /o:"tew9" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SONAR_LOGIN
               dotnet build
               dotnet test
               dotnet sonarscanner end /d:sonar.login=$SONAR_LOGIN
@@ -56,25 +56,25 @@ stages:
               SONAR_LOGIN: $(sonar.login)
 
   - stage: pack
-      jobs:
-        - job: pack_mvc
+      - job: pack_mvc
+      - steps:
+          - task: Docker@2
+          - inputs:
+              command: login
+              containerRegistry: p2_docker
+          - script: |
+              docker image build --file /docker/mvc.dockerfile --tag tangotew/mvc_proj Webflix/Webflix.MVC
+              docker image push tangotew/mvc_proj
+
+      - job: pack_api
         - steps:
-            - task: Docker@2
-            - inputs:
-                command: login
-                containerRegistry: p2_docker
-            - script: |
-                docker image build --file /docker/mvc.dockerfile --tag tangotew/mvc_proj Webflix/Webflix.MVC
-                docker image push tangotew/mvc_proj
-        - job: pack_api
-         - steps:
-            - task: Docker@2
-            - inputs:
-                command: login
-                containerRegistry: p2_docker
-            - script: |
-                docker image build --file /docker/mvc.dockerfile --tag tangotew/api_proj Webflix/Webflix.API
-                docker image push tangotew/api_proj
+          - task: Docker@2
+          - inputs:
+              command: login
+              containerRegistry: p2_docker
+          - script: |
+              docker image build --file /docker/mvc.dockerfile --tag tangotew/api_proj Webflix/Webflix.API
+              docker image push tangotew/api_proj
 
   # - stage: deploy
   #     jobs:
