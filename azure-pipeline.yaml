@@ -51,7 +51,7 @@ stages:
               name: "dotnet-sonarscanner"
           - script: |
               dotnet sonarscanner begin /k:"webflix_api1" /o:"tew9" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login2=$SONAR_LOGIN
-              dotnet build p2_project/Webflix/Webflix.sln
+              dotnet build Webflix/Webflix.sln
               dotnet test
               dotnet sonarscanner end /d:sonar.login2=$SONAR_LOGIN
             env:
