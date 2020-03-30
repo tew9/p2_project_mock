@@ -14,11 +14,11 @@ stages:
     jobs:
       - job: build_mvc
         steps:
-          - script: dotnet build --project Webflix.MVC/*.csproj
+          - script: dotnet build --project Webflix/Webflix.MVC/*.csproj
 
       - job: build_api
         steps:
-          - script: dotnet build --project Webflix.API/*.csproj
+          - script: dotnet build --project Webflix/Webflix.API/*.csproj
 
   - stage: test
     jobs:
